@@ -11,6 +11,11 @@ crossorigin=""></script>
 <style type="text/css">
 #mapid { height: 180px; }
 </style>
+<!--the following links incorporate the CSS required for custom icon creation-->
+<link rel='stylesheet' href='ionicons.min.css'>
+<link rel='stylesheet' href='leaflet.awesome-markers.css'>
+<script src='leaflet.awesome-markers.js'></script>
+
 </head>
 <body>
 <!-- the mapid div will hold the map -->
@@ -40,7 +45,7 @@ var geojsonFeature = {
 		"coordinates":[-0.134040,51.524559]}
 };
 //now add it to map
-L.geoJSON(geojsonFeature).addTo(mymap).bindPopup("<b>"+geojsonFeature.properties.name+" "+geojsonFeature.properties.popupContent+"<b>");
+//L.geoJSON(geojsonFeature).addTo(mymap).bindPopup("<b>"+geojsonFeature.properties.name+" "+geojsonFeature.properties.popupContent+"<b>");
 
 //show where the user clicks
 //create custom popup
@@ -59,6 +64,15 @@ function onMapClick(c){
 //now add the click event detector to map
 mymap.on('click',onMapClick);
 
+var testMarkerPink =L.AwesomeMarkers.icon({
+	icon:'play',
+	markerColor:'pink'
+});
+L.geoJSON(geojsonFeature,{
+	pointToLayer: function(feature,latlng){
+		return L.marker(latlng,{icon:testMarkerPink});
+	}
+}).addTo(mymap).bindPopup("<b>"+geojsonFeature.properties.name+" "+geojsonFeature.properties.popupContent+"<b>")
 
 </script>
 </body>
