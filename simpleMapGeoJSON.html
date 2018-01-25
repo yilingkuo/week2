@@ -33,11 +33,11 @@ var geojsonFeature = {
 "type":"Feature",
 "properties":{
 	"name":"London",
-	"popupContent":"This is where UCL is based"
+	"popupContent":"This is where UCL is currently located"
 	},
 	"geometry":{
 		"type":"Point",
-		"coordinates":[-0.118092,51.509865]}
+		"coordinates":[-0.134040,51.524559]}
 };
 //now add it to map
 L.geoJSON(geojsonFeature).addTo(mymap).bindPopup("<b>"+geojsonFeature.properties.name+" "+geojsonFeature.properties.popupContent+"<b>");
