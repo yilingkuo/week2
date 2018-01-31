@@ -11,12 +11,68 @@ crossorigin=""></script>
 <style type="text/css">
 #mapid { height: 180px; }
 </style>
+<!--the following links incorporate the CSS required for custom icon creation-->
+<link rel='stylesheet' href='ionicons.min.css'>
+<link rel='stylesheet' href='leaflet.awesome-markers.css'>
+<script src='leaflet.awesome-markers.js'></script>
+
 <script>
 function loadEarthquakeData(){
-	alert('load the data here')
+	alert('load the data here');
+	getEarthquakes();
 }
-</script>
 
+//the first variables will hold the XMLHttpRequest() - this must be done outside the function so it will be global
+//the second variable hold the layer itself
+var client;
+var earthquakelayer;
+var testMarkerRed=L.AwesomeMarkers.icon({
+icon:'play',
+markerColor:'red'
+});
+var testMarkerPink=L.AwesomeMarkers.icon({
+icon:'play',
+markerColor:'pink'
+});
+//create code to get the Earthquakes data using an XMLHttpRequest()
+function getEarthquakes(){
+	client=new XMLHttpRequest();
+	client.open('GET',"https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson");
+	client.onreadystatechange=earthquakeResponds;client.send();
+//note don't use earthquakeResponds() with( brackets as that doesn't work
+}
+//create the code to wait for response from the data server, and process the response once it is received
+function earthquakeResponds(){
+if(client.readyState==4){
+	var earthquakedata=client.responseText;
+	loadEarthquakelayer(earthquakedata);
+	}
+}
+//convert the received data (text) to JSON format and add it to the map
+function loadEarthquakelayer(earthquakedata){
+//convert text to JSON
+var earthquakejson=JSON.parse(earthquakedata);
+//add the JSONlayer on to the map
+earthquakelayer=L.geoJson(earthquakejson,
+{
+//use point to layer to create the points
+pointToLayer: function(feature, latlng){
+	//look at GeoJSON file's properties
+	//marker's color depend on the magnitude value
+	//also include a popup that shows coords of the earthquakes
+	if (feature.properties.mag>1.75){
+		return L.marker(latlng,{icon:testMarkerRed}).bindPopup('<b>'+feature.properties.place+'</b>')
+		;}
+	//if mag is 1.75 or less
+	else{
+		return L.marker(latlng,{icon:testMarkerPink}).bindPopup('<b>'+feature.properties.place+'</b>')
+		};;
+	},
+}).addTo(mymap);
+mymap.fitBounds(earthquakelayer.getBounds());
+}
+
+</script>
 </head>
 
 
