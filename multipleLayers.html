@@ -72,6 +72,12 @@ pointToLayer: function(feature, latlng){
 mymap.fitBounds(earthquakelayer.getBounds());
 }
 
+//Remove data
+function removeEarthquakeData(){
+alert('remove the earthquake data here')
+
+}
+
 </script>
 </head>
 
@@ -81,6 +87,8 @@ mymap.fitBounds(earthquakelayer.getBounds());
 <div id="mapid" style="width: 600px; height: 400px;"></div>
 <!--put the button below the basemap-->
 <button id='loadData' name='loadData' onclick='loadEarthquakeData()'>Click here to load the earthquake data </button>
+<button id='removeloadData' name='removeloadData' onclick='removeEarthquakeData()'>Click here to remove the earthquake data </button>
+
 <!-- the following script will load the map and set the default view and zoom, as well as loading the
 basemap tiles -->
 <script>
